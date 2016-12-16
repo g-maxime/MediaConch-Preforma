@@ -1,0 +1,145 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+
+# Uncomment this to turn on verbose mode.
+export DH_VERBOSE=1
+
+configure: configure-stamp
+configure-stamp:
+	dh_testdir
+	# Add here commands to configure the package.
+
+	fromdos      */*.txt
+	chmod 644    */*.txt
+
+	cd MediaConch-Implementation/Project/GNU/CLI && chmod +x autogen.sh
+	cd MediaConch-Implementation/Project/GNU/CLI && ./autogen.sh
+	cd MediaConch-Implementation/Project/GNU/CLI && ./configure --prefix=/usr
+
+	cd MediaConch-Policy/Project/GNU/CLI && chmod +x autogen.sh
+	cd MediaConch-Policy/Project/GNU/CLI && ./autogen.sh
+	cd MediaConch-Policy/Project/GNU/CLI && ./configure --prefix=/usr
+
+	cd MediaConch-Policy/Project/GNU/Server && chmod +x autogen.sh
+	cd MediaConch-Policy/Project/GNU/Server && ./autogen.sh
+	cd MediaConch-Policy/Project/GNU/Server && ./configure --prefix=/usr
+
+	cd MediaConch-Implementation/Project/Qt && chmod +x prepare
+	cd MediaConch-Implementation/Project/Qt && ./prepare "DEFINES+=MEDIAINFO_LIBCURL_YES"
+
+	cd MediaConch-Policy/Project/Qt && chmod +x prepare
+	cd MediaConch-Policy/Project/Qt && ./prepare "DEFINES+=MEDIAINFO_LIBCURL_YES"
+
+	touch $@
+
+
+build: build-stamp
+build-stamp: configure-stamp  
+	dh_testdir
+
+	# Add here commands to compile the package.
+	cd MediaConch-Implementation/Project/GNU/CLI && $(MAKE)
+	cd MediaConch-Policy/Project/GNU/CLI && $(MAKE)
+
+	cd MediaConch-Policy/Project/GNU/Server && $(MAKE)
+
+	cd MediaConch-Implementation/Project/Qt && $(MAKE)
+	cd MediaConch-Policy/Project/Qt && $(MAKE)
+
+	touch $@
+
+clean: 
+	dh_testdir
+	dh_testroot
+
+	# Add here commands to clean up after the build process.
+	# $(MAKE) clean
+
+	dh_clean 
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k 
+	dh_installdirs
+
+	# Add here commands to install the package into debian/tmp
+	cd MediaConch-Implementation/Project/GNU/CLI && $(MAKE) install DESTDIR=$(CURDIR)/debian/tmp
+	cd MediaConch-Policy/Project/GNU/CLI && $(MAKE) install DESTDIR=$(CURDIR)/debian/tmp
+	cd MediaConch-Policy/Project/GNU/Server && $(MAKE) install DESTDIR=$(CURDIR)/debian/tmp
+	install -dm 755 $(CURDIR)/debian/tmp/usr/bin
+	install -m 755 	MediaConch-Implementation/Project/Qt/mediaconch-implementation-gui $(CURDIR)/debian/tmp/usr/bin
+	install -m 755 	MediaConch-Policy/Project/Qt/mediaconch-policy-gui $(CURDIR)/debian/tmp/usr/bin
+
+	install -dm 755 $(CURDIR)/debian/tmp/usr/share/doc/mediaconch
+	install -m 644 MediaConch-Policy/Release/ReadMe_CLI_Linux.txt $(CURDIR)/debian/tmp/usr/share/doc/mediaconch/ReadMe.txt
+	install -m 644 MediaConch-Policy/History_CLI.txt $(CURDIR)/debian/tmp/usr/share/doc/mediaconch/History.txt
+	install -m 644 MediaConch-Policy/License.html $(CURDIR)/debian/tmp/usr/share/doc/mediaconch
+
+	install -dm 755 $(CURDIR)/debian/tmp/usr/share/doc/mediaconch-gui
+	install -m 644 MediaConch-Policy/Release/ReadMe_GUI_Linux.txt $(CURDIR)/debian/tmp/usr/share/doc/mediaconch-gui/ReadMe.txt
+	install -m 644 MediaConch-Policy/History_GUI.txt $(CURDIR)/debian/tmp/usr/share/doc/mediaconch-gui/History.txt
+	install -m 644 MediaConch-Policy/License.html $(CURDIR)/debian/tmp/usr/share/doc/mediaconch-gui
+
+	install -dm 755 $(CURDIR)/debian/tmp/usr/share/pixmaps
+	install -m 644 MediaConch-Policy/Source/Resource/Image/MediaConch.xpm $(CURDIR)/debian/tmp/usr/share/pixmaps/mediaconch.xpm
+	install -dm 755 $(CURDIR)/debian/tmp/usr/share/icons/hicolor
+	install -m 644 MediaConch-Policy/Source/Resource/Image/MediaConchBig.png $(CURDIR)/debian/tmp/usr/share/icons/hicolor/mediaconch.png
+	install -dm 755 $(CURDIR)/debian/tmp/usr/share/icons/hicolor/256x256/apps
+	install -m 644 MediaConch-Policy/Source/Resource/Image/MediaConch.png $(CURDIR)/debian/tmp/usr/share/icons/hicolor/256x256/apps/mediaconch.png
+	install -dm 755 $(CURDIR)/debian/tmp/usr/share/icons/hicolor/scalable/apps
+	install -m 644 MediaConch-Policy/Source/Resource/Image/MediaConch.svg $(CURDIR)/debian/tmp/usr/share/icons/hicolor/scalable/apps/mediaconch.svg
+
+	install -dm 755 $(CURDIR)/debian/tmp/usr/share/applications
+	install -m 644 MediaConch-Implementation/Project/GNU/GUI/mediaconch-gui.desktop $(CURDIR)/debian/tmp/usr/share/applications/mediaconch-implementation-gui.desktop
+	install -m 644 MediaConch-Policy/Project/GNU/GUI/mediaconch-gui.desktop $(CURDIR)/debian/tmp/usr/share/applications/mediaconch-policy-gui.desktop
+	install -dm 755 $(CURDIR)/debian/tmp/usr/share/apps/konqueror/servicemenus/
+	install -m 644 MediaConch-Implementation/Project/GNU/GUI/mediaconch-gui.kde3.desktop $(CURDIR)/debian/tmp/usr/share/apps/konqueror/servicemenus/mediaconch-implementation-gui.desktop
+	install -m 644 MediaConch-Policy/Project/GNU/GUI/mediaconch-gui.kde3.desktop $(CURDIR)/debian/tmp/usr/share/apps/konqueror/servicemenus/mediaconch-policy-gui.desktop
+	install -dm 755 $(CURDIR)/debian/tmp/usr/share/kde4/services/ServiceMenus/
+	install -m 644 MediaConch-Implementation/Project/GNU/GUI/mediaconch-gui.kde4.desktop $(CURDIR)/debian/tmp/usr/share/kde4/services/ServiceMenus/mediaconch-implementation-gui.desktop
+	install -m 644 MediaConch-Policy/Project/GNU/GUI/mediaconch-gui.kde4.desktop $(CURDIR)/debian/tmp/usr/share/kde4/services/ServiceMenus/mediaconch-policy-gui.desktop
+	install -dm 755 $(CURDIR)/debian/tmp/usr/share/appdata
+	install -m 644 MediaConch-Implementation/Project/GNU/GUI/mediaconch-gui.appdata.xml $(CURDIR)/debian/tmp/usr/share/appdata/mediaconch-implementation-gui.appdata.xml
+	install -m 644 MediaConch-Policy/Project/GNU/GUI/mediaconch-gui.appdata.xml $(CURDIR)/debian/tmp/usr/share/appdata/mediaconch-policy-gui.appdata.xml
+
+# Build architecture-independent files here.
+binary-indep: build install
+# We have nothing to do by default.
+
+# Build architecture-dependent files here.
+binary-arch: build install
+	dh_testdir
+	dh_testroot
+	dh_install --sourcedir=debian/tmp
+	dh_installchangelogs 
+	dh_installdocs
+	dh_installexamples
+#	dh_install
+#	dh_installmenu
+#	dh_installdebconf	
+#	dh_installlogrotate
+#	dh_installemacsen
+#	dh_installpam
+#	dh_installmime
+#	dh_installinit
+#	dh_installcron
+#	dh_installinfo
+	dh_installman
+	dh_link
+	dh_strip -p mediaconch --dbg-package=mediaconch-dbg
+	dh_strip -p mediaconch-server --dbg-package=mediaconch-server-dbg
+	dh_strip -p mediaconch-gui --dbg-package=mediaconch-gui-dbg
+	dh_compress
+	dh_fixperms
+#	dh_perl
+#	dh_python
+	dh_makeshlibs
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install configure

@@ -1,0 +1,88 @@
+Source: mediaconch
+Priority: optional
+Section: utils
+Maintainer: MediaArea.net SARL <info@mediaarea.net>
+Build-Depends: debhelper (>= 9),
+               dh-autoreconf,
+               libmediainfo-dev (>= 0.7.91),
+               libzen-dev (>= 0.4.34),
+               libqt4-dev,
+               libxml2-dev,
+               libxslt-dev,
+               libsqlite3-dev,
+               libjansson-dev,
+               zlib1g-dev,
+               pkg-config,
+               libqtwebkit-dev,
+               libcurl4-gnutls-dev,
+               libevent-dev,
+Standards-Version: 3.9.6
+Homepage: http://MediaArea.net/MediaConch
+Vcs-Svn: https://github.com/MediaArea/MediaConch_SourceCode.git
+Vcs-Browser: https://github.com/MediaArea/MediaConch_SourceCode
+
+Package: mediaconch
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Implementation checker, policy checker, reporter, and fixer
+ that targets preservation-level audiovisual files (specifically Matroska,
+ Linear Pulse Code Modulation (LPCM) and FF Video Codec 1 (FFV1)).
+ .
+ This project is maintained by MediaArea and funded by PREFORMA.
+ .
+ This package includes the command line interface.
+
+Package: mediaconch-server
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Implementation checker, policy checker, reporter, and fixer
+ that targets preservation-level audiovisual files (specifically Matroska,
+ Linear Pulse Code Modulation (LPCM) and FF Video Codec 1 (FFV1)).
+ .
+ This project is maintained by MediaArea and funded by PREFORMA.
+ .
+ This package includes the server.
+
+Package: mediaconch-gui
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Implementation checker, policy checker, reporter, and fixer
+ that targets preservation-level audiovisual files (specifically Matroska,
+ Linear Pulse Code Modulation (LPCM) and FF Video Codec 1 (FFV1)).
+ .
+ This project is maintained by MediaArea and funded by PREFORMA.
+ .
+ This package contains the graphical user interface.
+
+Package: mediaconch-dbg
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Implementation checker, policy checker, reporter, and fixer
+ that targets preservation-level audiovisual files (specifically Matroska,
+ Linear Pulse Code Modulation (LPCM) and FF Video Codec 1 (FFV1)).
+ .
+ This project is maintained by MediaArea and funded by PREFORMA.
+ .
+ This package contains the debugging symbols of the command line interface.
+
+Package: mediaconch-server-dbg
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Implementation checker, policy checker, reporter, and fixer
+ that targets preservation-level audiovisual files (specifically Matroska,
+ Linear Pulse Code Modulation (LPCM) and FF Video Codec 1 (FFV1)).
+ .
+ This project is maintained by MediaArea and funded by PREFORMA.
+ .
+ This package contains the debugging symbols of the server.
+
+Package: mediaconch-gui-dbg
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Implementation checker, policy checker, reporter, and fixer
+ that targets preservation-level audiovisual files (specifically Matroska,
+ Linear Pulse Code Modulation (LPCM) and FF Video Codec 1 (FFV1)).
+ .
+ This project is maintained by MediaArea and funded by PREFORMA.
+ .
+ This package contains the debugging symbols of the graphical user interface.
