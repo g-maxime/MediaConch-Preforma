@@ -1,0 +1,6 @@
+[submodule "MediaConch-Policy"]
+	path = MediaConch-Policy
+	url = https://github.com/MediaArea/MediaConch-Policy
+[submodule "MediaConch-Implementation"]
+	path = MediaConch-Implementation
+	url = https://github.com/MediaArea/MediaConch-Implementation
